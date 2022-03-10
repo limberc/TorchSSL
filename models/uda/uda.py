@@ -1,19 +1,18 @@
-import torch
+import contextlib
+import os
+from collections import Counter
+from copy import deepcopy
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-from torch.cuda.amp import autocast, GradScaler
-from collections import Counter
-import os
-import contextlib
-from train_utils import AverageMeter
-
-from .uda_utils import consistency_loss, TSA, Get_Scalar, torch_device_one
-from train_utils import ce_loss, wd_loss, EMA, Bn_Controller
-
 from sklearn.metrics import *
-from copy import deepcopy
+from torch.cuda.amp import GradScaler, autocast
+
+from train_utils import AverageMeter, Bn_Controller, EMA, ce_loss, wd_loss
+from .uda_utils import Get_Scalar, TSA, consistency_loss, torch_device_one
 
 
 class Uda:

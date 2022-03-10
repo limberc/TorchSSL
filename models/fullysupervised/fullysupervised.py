@@ -1,15 +1,14 @@
-import torch
-import numpy as np
-import torch.nn.functional as F
-from torch.cuda.amp import autocast, GradScaler
-
-import os
 import contextlib
-
-from train_utils import ce_loss, wd_loss, EMA, Bn_Controller
-
-from sklearn.metrics import *
+import os
 from copy import deepcopy
+
+import numpy as np
+import torch
+import torch.nn.functional as F
+from sklearn.metrics import *
+from torch.cuda.amp import GradScaler, autocast
+
+from train_utils import Bn_Controller, EMA, ce_loss, wd_loss
 
 
 class FullySupervised:

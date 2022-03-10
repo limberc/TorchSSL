@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+
 from train_utils import ce_loss
 
 
@@ -12,5 +13,3 @@ class Get_Scalar:
 
     def __call__(self, iter):
         return self.value
-
-

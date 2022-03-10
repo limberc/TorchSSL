@@ -1,22 +1,20 @@
+import contextlib
+import os
 import pickle
+from collections import Counter
+from copy import deepcopy
 
-import torch
 import numpy as np
 import pandas as pd
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-from torch.cuda.amp import autocast, GradScaler
-from collections import Counter
-import os
-import contextlib
-from train_utils import AverageMeter
-
-from .fixmatch_utils import consistency_loss, Get_Scalar
-from train_utils import ce_loss, wd_loss, EMA, Bn_Controller
-
 from sklearn.metrics import *
-from copy import deepcopy
+from torch.cuda.amp import GradScaler, autocast
+
+from train_utils import AverageMeter, Bn_Controller, EMA, ce_loss, wd_loss
+from .fixmatch_utils import Get_Scalar, consistency_loss
 
 
 class FixMatch:

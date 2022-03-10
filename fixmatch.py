@@ -1,22 +1,21 @@
 # import needed library
-import os
 import logging
-import random
-import warnings
-
 import numpy as np
+import os
+import random
 import torch
-import torch.nn as nn
-import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
 import torch.multiprocessing as mp
+import torch.nn as nn
+import torch.nn.parallel
+import warnings
 
-from utils import net_builder, get_logger, count_parameters, over_write_args_from_file
-from train_utils import TBLog, get_optimizer, get_cosine_schedule_with_warmup
-from models.fixmatch.fixmatch import FixMatch
-from datasets.ssl_dataset import SSL_Dataset, ImageNetLoader
 from datasets.data_utils import get_data_loader
+from datasets.ssl_dataset import ImageNetLoader, SSL_Dataset
+from models.fixmatch.fixmatch import FixMatch
+from train_utils import TBLog, get_cosine_schedule_with_warmup, get_optimizer
+from utils import count_parameters, get_logger, net_builder, over_write_args_from_file
 
 
 def main(args):
@@ -183,15 +182,15 @@ def main_worker(gpu, ngpus_per_node, args):
     cudnn.benchmark = True
     if args.rank != 0 and args.distributed:
         torch.distributed.barrier()
- 
+
     # Construct Dataset & DataLoader
     if args.dataset != "imagenet":
         train_dset = SSL_Dataset(args, alg='fixmatch', name=args.dataset, train=True,
-                                num_classes=args.num_classes, data_dir=args.data_dir)
+                                 num_classes=args.num_classes, data_dir=args.data_dir)
         lb_dset, ulb_dset = train_dset.get_ssl_dset(args.num_labels)
 
         _eval_dset = SSL_Dataset(args, alg='fixmatch', name=args.dataset, train=False,
-                                num_classes=args.num_classes, data_dir=args.data_dir)
+                                 num_classes=args.num_classes, data_dir=args.data_dir)
         eval_dset = _eval_dset.get_dset()
     else:
         image_loader = ImageNetLoader(root_path=args.data_dir, num_labels=args.num_labels,
@@ -201,7 +200,7 @@ def main_worker(gpu, ngpus_per_node, args):
         eval_dset = image_loader.get_lb_test_data()
     if args.rank == 0 and args.distributed:
         torch.distributed.barrier()
-                            
+
     loader_dict = {}
     dset_dict = {'train_lb': lb_dset, 'train_ulb': ulb_dset, 'eval': eval_dset}
 
@@ -267,7 +266,8 @@ if __name__ == "__main__":
     parser.add_argument('--resume', action='store_true')
     parser.add_argument('--load_path', type=str, default=None)
     parser.add_argument('-o', '--overwrite', action='store_true')
-    parser.add_argument('--use_tensorboard', action='store_true', help='Use tensorboard to plot and save curves, otherwise save the curves locally.')
+    parser.add_argument('--use_tensorboard', action='store_true',
+                        help='Use tensorboard to plot and save curves, otherwise save the curves locally.')
 
     '''
     Training Configuration of FixMatch

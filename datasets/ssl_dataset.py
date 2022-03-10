@@ -1,26 +1,23 @@
-import torch
-
-from .data_utils import split_ssl_data, sample_labeled_data
-from .dataset import BasicDataset
-from collections import Counter
-import torchvision
-import numpy as np
-from torchvision import transforms
-import json
-import os
-
-import random
-from .augmentation.randaugment import RandAugment
-
-from torch.utils.data import sampler, DataLoader
-from torch.utils.data.sampler import BatchSampler
-import torch.distributed as dist
-from datasets.DistributedProxySampler import DistributedProxySampler
-
-import gc
-import sys
 import copy
+import gc
+import json
+import numpy as np
+import os
+import random
+import sys
+import torch
+import torch.distributed as dist
+import torchvision
 from PIL import Image
+from collections import Counter
+from torch.utils.data import DataLoader, sampler
+from torch.utils.data.sampler import BatchSampler
+from torchvision import transforms
+
+from datasets.DistributedProxySampler import DistributedProxySampler
+from .augmentation.randaugment import RandAugment
+from .data_utils import sample_labeled_data, split_ssl_data
+from .dataset import BasicDataset
 
 mean, std = {}, {}
 mean['cifar10'] = [x / 255 for x in [125.3, 123.0, 113.9]]

@@ -1,17 +1,15 @@
-import torch
-import numpy as np
-import torch.nn.functional as F
-from torch.cuda.amp import autocast, GradScaler
-
-import os
 import contextlib
-from train_utils import EMA, Bn_Controller
-
-from .vat_utils import vat_loss, kl_div_with_logit, entropy_loss, _l2_normalize
-from train_utils import ce_loss, wd_loss
-
-from sklearn.metrics import *
+import os
 from copy import deepcopy
+
+import numpy as np
+import torch
+import torch.nn.functional as F
+from sklearn.metrics import *
+from torch.cuda.amp import GradScaler, autocast
+
+from train_utils import Bn_Controller, EMA, ce_loss, wd_loss
+from .vat_utils import _l2_normalize, entropy_loss, kl_div_with_logit, vat_loss
 
 
 class Vat:
@@ -179,7 +177,6 @@ class Vat:
 
                     if not self.tb_log is None:
                         self.tb_log.update(tb_dict, self.it)
-
 
             self.it += 1
             del tb_dict

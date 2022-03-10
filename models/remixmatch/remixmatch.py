@@ -1,20 +1,18 @@
+import contextlib
+import json
+import os
+from copy import deepcopy
+
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
-from torch.cuda.amp import autocast, GradScaler
-
-import os
-import contextlib
-from train_utils import AverageMeter
-
-from .remixmatch_utils import consistency_loss, Get_Scalar, one_hot, mixup_one_target
-from train_utils import ce_loss, wd_loss, EMA, Bn_Controller
-
 from sklearn.metrics import *
-import numpy as np
-import json
-from copy import deepcopy
+from torch.cuda.amp import GradScaler, autocast
+
+from train_utils import AverageMeter, Bn_Controller, EMA, ce_loss, wd_loss
+from .remixmatch_utils import Get_Scalar, consistency_loss, mixup_one_target, one_hot
 
 
 class ReMixMatch:

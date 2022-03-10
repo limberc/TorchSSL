@@ -1,15 +1,16 @@
+import copy
+import math
+import os
+import time
+from copy import deepcopy
+
 import torch
 import torch.nn as nn
-from torch.utils.tensorboard import SummaryWriter
-from torch.optim.lr_scheduler import LambdaLR
 import torch.nn.functional as F
-
-import math
-import time
-import os
-from copy import deepcopy
+from torch.optim.lr_scheduler import LambdaLR
 from torch.optim.optimizer import Optimizer, required
-import copy
+from torch.utils.tensorboard import SummaryWriter
+
 from custom_writer import CustomWriter
 
 '''
@@ -247,15 +248,18 @@ def get_cosine_schedule_with_warmup(optimizer,
 
     return LambdaLR(optimizer, _lr_lambda, last_epoch)
 
+
 def get_imagenet_schedule(optimizer, num_training_steps, num_labels, batch_size):
     def iter2epoch(iter):
         iter_per_ep = num_labels // batch_size
         ep = iter // iter_per_ep
         return ep
+
     def epoch2iter(epoch):
         iter_per_ep = num_labels // batch_size
         iter = epoch * iter_per_ep
         return iter
+
     def _lr_lambda(iter):
         return None
 
