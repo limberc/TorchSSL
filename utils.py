@@ -56,7 +56,6 @@ def net_builder(net_name, from_name: bool, net_conf=None, is_remix=False):
                                received: {net_name}")
         else:
             return models.__dict__[net_name]
-
     else:
         if net_name == 'WideResNet':
             import models.nets.wrn as net

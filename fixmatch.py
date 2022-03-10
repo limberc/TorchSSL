@@ -1,15 +1,16 @@
 # import needed library
 import logging
-import numpy as np
 import os
 import random
+import warnings
+
+import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.distributed as dist
 import torch.multiprocessing as mp
 import torch.nn as nn
 import torch.nn.parallel
-import warnings
 
 from datasets.data_utils import get_data_loader
 from datasets.ssl_dataset import ImageNetLoader, SSL_Dataset
